@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Grid with JavaScript</title>
+    <style>
+        .outer-container {
+            padding: 20px;
+            border: 2px solid green;
+            border-radius: 15px;
+            margin: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(3, auto);
+            gap: 10px;
+        }
+        .grid-item {
+            padding: 20px;
+            text-align: center;
+        }
+        .row-span-3 {
+            grid-row: span 3;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+     const sheetID = '1Dq0l6jAA5GO_OVETS9ILbiZ8-to4zrtq2x7CRtFqroE';
+const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`;
+const sheetName = 'users';
+let qu = 'Select B,C,D,E';
+const query = encodeURIComponent(qu);
+const url = `${base}&sheet=${sheetName}&tq=${query}`;
+const data = [];
+document.addEventListener('DOMContentLoaded', init);
+ 
+const output = document.querySelector('.output');
+ 
+function init() {
+    //console.log('ready');
+    fetch(url)
+        .then(res => res.text())
+        .then(rep => {
+            //console.log(rep);
+            const jsData = JSON.parse(rep.substr(47).slice(0, -2));
+            console.log(jsData);
+            const colz = [];
+            jsData.table.cols.forEach((heading) => {
+                if (heading.label) {
+                    colz.push(heading.label.toLowerCase().replace(/\s/g, ''));
+                }
+            })
+            jsData.table.rows.forEach((main) => {
+                //console.log(main);
+                const row = {};
+                colz.forEach((ele, ind) => {
+                    //console.log(ele);
+                    row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
+                })
+                data.push(row);
+            })
+            console.log("Data Here")
+            console.log(data);
+            disp(data);
+        })
+}
+
+function disp(values){
+    for (let i = 0; i < values.length; i++){
+     // Create the outer container div
+        const outerContainer = document.createElement('div');
+        outerContainer.classList.add('outer-container');
+
+        // Create the grid container div
+        const gridContainer = document.createElement('div');
+        gridContainer.classList.add('grid-container');
+
+        // Create and append the grid item divs
+        const items = [values[i].nameofproduct, values[i].productinage, values[i].price, values[i].purchaselink];
+        items.forEach((text, index) => {
+            const gridItem = document.createElement('div');
+            gridItem.classList.add('grid-item');
+            if (index === 1) { // Make the second item an image and span three rows
+                gridItem.classList.add('row-span-3');
+                const img = document.createElement('img');
+                img.src = 'https://drive.google.com/thumbnail?id='+(items[1].split("/")[3]).split("=")[1]; // Replace with your image URL
+                img.alt = 'Image 2';
+                img.style.width = '150px';
+                img.style.height = '150px' // Ensure the image fits within the grid item
+                gridItem.appendChild(img);
+            } else if (index === 3) { // Make the fourth item a hyperlink
+                const link = document.createElement('a');
+                link.href = items[3]; // Replace with your link URL
+                link.textContent = 'BUY NOW';
+               
+                gridItem.appendChild(link);
+            } else {
+                gridItem.textContent = text;
+            }
+            gridContainer.appendChild(gridItem);
+        });
+
+        // Append the grid container to the outer container
+        outerContainer.appendChild(gridContainer);
+
+        // Append the outer container to the body
+        document.body.appendChild(outerContainer);
+}
+}
+    </script>
+</body>
+</html>
