@@ -1,13 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <center>
-        <h2>Latest Deals</h2>
-    </center>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Latest Deals</title>
+    <title>Add Grid with JavaScript</title>
+    <div class="navbar">
+        <div class="logo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhao82t-MsLA0kMII_O0UHlac0Vmprin-ZSVKqQt5jGTLarf4DNyX_8a74ZLSRSUToe3CeA0Pz-ahBGygK2dnInXAenrpED5sYZxaSOIT5Zx9yx1Fk-oVgX3DzbjzWNUwMpY3lgYGVO-HZ8doaanZvCW6JVEluuBxog9lDP3LC61dpqrW_T9dznALNL4hs/s320/Screenshot%202024-06-12%20121331.png" height="45px"></div>
+        <div class="contacts">
+            <a href="https://t.me/yourtelegram" target="_blank">Telegram</a>
+            <a href="https://wa.me/yourwhatsappnumber" target="_blank">WhatsApp</a>
+        </div>
+    </div>
     <style>
+           body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+        }
+        .navbar .logo {
+            flex: 1;
+            text-align: center;
+        }
+        .navbar .contacts {
+            display: flex;
+            gap: 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .navbar a:hover {
+            background-color: #575757;
+        }
         .outer-container {
             padding: 20px;
             border: 2px solid green;
@@ -17,17 +51,17 @@
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: repeat(3, auto);
+            grid-template-rows: repeat(4, auto);
             gap: 10px;
         }
         .grid-item {
-            padding: 20px;
+            padding: 5px;
             text-align: center;
         }
         .row-span-3 {
-            grid-row: span 3;
+            grid-row: span 4;
         }
-         a:link, a:visited {
+        a:link, a:visited {
   background-color: green;
   color: white;
   padding: 14px 25px;
@@ -44,7 +78,7 @@
      const sheetID = '1Dq0l6jAA5GO_OVETS9ILbiZ8-to4zrtq2x7CRtFqroE';
 const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`;
 const sheetName = 'users';
-let qu = 'Select B,C,D,E';
+let qu = 'Select B,C,D,E,F';
 const query = encodeURIComponent(qu);
 const url = `${base}&sheet=${sheetName}&tq=${query}`;
 const data = [];
@@ -92,7 +126,7 @@ function disp(values){
         gridContainer.classList.add('grid-container');
 
         // Create and append the grid item divs
-        const items = [values[i].nameofproduct, values[i].productinage, "₹"+values[i].price, values[i].purchaselink];
+        const items = [values[i].nameofproduct, values[i].productinage, values[i].price,values[i].specification,values[i].purchaselink];
         items.forEach((text, index) => {
             const gridItem = document.createElement('div');
             gridItem.classList.add('grid-item');
@@ -104,9 +138,9 @@ function disp(values){
                 img.style.width = '150px';
                 img.style.height = '150px' // Ensure the image fits within the grid item
                 gridItem.appendChild(img);
-            } else if (index === 3) { // Make the fourth item a hyperlink
+            } else if (index === 4) { // Make the fourth item a hyperlink
                 const link = document.createElement('a');
-                link.href = items[3]; // Replace with your link URL
+                link.href = items[4]; // Replace with your link URL
                 link.textContent = 'BUY NOW';
                
                 gridItem.appendChild(link);
