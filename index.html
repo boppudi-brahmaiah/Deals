@@ -126,7 +126,7 @@ function disp(values){
         gridContainer.classList.add('grid-container');
 
         // Create and append the grid item divs
-        const items = [values[i].nameofproduct, values[i].productinage, values[i].price,values[i].specification,values[i].purchaselink];
+        const items = [values[i].nameofproduct, values[i].productinage, "₹"+values[i].price,values[i].specification,values[i].purchaselink];
         items.forEach((text, index) => {
             const gridItem = document.createElement('div');
             gridItem.classList.add('grid-item');
